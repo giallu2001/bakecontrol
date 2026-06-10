@@ -1,4 +1,7 @@
 import { useState, useMemo } from "react";
+import { useEffect } from "react";
+import { supabase } from "./lib/supabase";
+console.log("APP CARICATA");
 
 // ── Icons (inline SVG components) ──────────────────────────────────────────
 const Icon = ({ d, size = 20, stroke = "currentColor", fill = "none", strokeWidth = 1.8 }) => (
@@ -590,6 +593,16 @@ const NAV = [
 
 // ── APP ────────────────────────────────────────────────────────────────────
 export default function App() {
+    useEffect(() => {
+    async function testConnection() {
+      const { data, error } = await supabase.from("recipes").select("*");
+      console.log("SUPABASE DATA:", data);
+      console.log("SUPABASE ERROR:", error);
+    }
+
+    testConnection();
+  }, []);
+
   const [active, setActive] = useState("dashboard");
   const [collapsed, setCollapsed] = useState(false);
   const current = NAV.find(n => n.id === active);
